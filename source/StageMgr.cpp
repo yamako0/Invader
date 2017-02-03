@@ -8,6 +8,7 @@ CStageMgr::CStageMgr()
 	//font2 = Font(30, L"Old English Text MT", FontStyle::Outline);
 	font2 = Font(20, L"Carousel", FontStyle::Outline);
 	font2.changeOutlineStyle(TextOutlineStyle(Palette::Red, Palette::Black, 1.0));
+	State = ePlay;
 }
 
 CStageMgr::~CStageMgr()
@@ -18,6 +19,7 @@ void CStageMgr::Initialize()
 {
 	Player.Initialize();
 	EnemyMgr.Initialize();
+	State = ePlay;
 }
 
 void CStageMgr::Finalize()
@@ -30,18 +32,17 @@ void CStageMgr::Update()
 {
 	if (Player.GetState() == eDeath)
 	{
-		if (Input::MouseL.clicked)
-		{
-			Finalize();
-			Initialize();
-		}
-		if (Input::KeyEscape.clicked)
-		{
-			Finalize();
-			System::Exit();
-		}
+		RestartOrExit();
 		return;
 	}
+
+	if (EnemyMgr.GetEnemyNum() == 0)
+	{
+		State = eWin;
+		RestartOrExit();
+		return;
+	}
+
 	Player.Update();
 
 	EnemyMgr.Update();
@@ -60,7 +61,14 @@ void CStageMgr::Draw()
 
 	if (Player.GetState() == eDeath)
 	{
-		font(L"GameOver").draw(20, 100);
+		font(L"GAME OVER").draw(20, 100);
+		font2(L"Continue: LeftClick").draw(300, 300);
+		font2(L"Exit: Escape").draw(300, 350);
+	}
+
+	if (State == eWin)
+	{
+		font(L"CLEAR").draw(40, 100);
 		font2(L"Continue: LeftClick").draw(300, 300);
 		font2(L"Exit: Escape").draw(300, 350);
 	}
@@ -133,5 +141,19 @@ void CStageMgr::PlayerAndEBullet()
 				break;
 			}
 		}
+	}
+}
+
+void CStageMgr::RestartOrExit()
+{
+	if (Input::MouseL.clicked)
+	{
+		Finalize();
+		Initialize();
+	}
+	if (Input::KeyEscape.clicked)
+	{
+		Finalize();
+		System::Exit();
 	}
 }

@@ -34,5 +34,6 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	list<CEnemy> *GetEnemyArray() { return &Enemy; }
+	list<CEnemy> *GetEnemyArray() { return &Enemy; }	//©–{—ˆ‚ÍNG
+	int GetEnemyNum() { return Enemy.size(); }
 };

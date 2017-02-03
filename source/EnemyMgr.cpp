@@ -15,7 +15,7 @@ CEnemyMgr::~CEnemyMgr()
 void CEnemyMgr::Initialize()
 {
 	Vec2 vec;
-
+	
 	BasePos.set(60, 30);
 	Dir = eRight;
 	LastDir = eDown;

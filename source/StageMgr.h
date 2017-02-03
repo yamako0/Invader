@@ -7,6 +7,13 @@
 #include "Collision.h"
 #include "BulletMgr.h"
 
+enum GameState
+{
+	ePlay,
+	eWin,
+	eLose
+};
+
 class CStageMgr : public Task
 {
 	CPlayer Player;
@@ -14,11 +21,13 @@ class CStageMgr : public Task
 	CCollision Collision;
 	Font font;
 	Font font2;
+	GameState State;
 
 	void CheckHitAllObject();
 	void PBulletAndEnemy();
 	void PlayerAndEnemy();
 	void PlayerAndEBullet();
+	void RestartOrExit();
 
 public:
 	CStageMgr();
